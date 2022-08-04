@@ -1,10 +1,16 @@
 (ns app
-  (:require [org.httpkit.server :refer [run-server ]]))
+  (:require [org.httpkit.server :refer [run-server]])
+  (:require [clojure.string :as s]))
 
 (defn main-page [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body    "hello"})
+
+(defn page-404 [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body    "Error-404!\nPage not found!"})
 
 (defn tasks-all [request]
   {:status 200
@@ -12,52 +18,70 @@
    :body    "tasks"})
 
 (defn tasks [request]
-  (let [{:keys [my-param]} request]
+  (let [{:keys [identifier]} request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body    (format "Task's id: %s" my-param)}))
+   :body    (format "Task's id: %s" identifier)}))
 
-(def route-map
-  {""  {:get main-page
-          "tasks" {:get tasks-all
-                   [:identifier] {:get tasks}
-                   }
-         }
-   })
+(def custom-route-map
+  {:get main-page
+   "tasks" {:get tasks-all
+            :post tasks-all
+           [:identifier] {
+                          :get tasks
+                         }
+           }
+   :not-found-page page-404
+  })
 
 (defn custom-parser [uri]
   "Returns parsed uri in vector"
-  (let [vector-path (clojure.string/split (clojure.string/replace uri #"/+" "/") #"/")]
-    (if (empty? vector-path)
-      [""]
+  (let [vector-path (s/split (s/replace (s/replace-first uri #"/" "") #"/+" "/") #"/")]
+    (if (or (empty? vector-path) (= [""] vector-path))
+      []
       vector-path)))
 
 (defn route-navigator [cur path route-map request]
+  (do (println "\n" cur "\n" path "\n" route-map "\n" (:uid request) "\n") ;delete later
   (if (empty? path)
-    (get route-map cur)
-      (if-let [identifier (first (filterv keyword?
+    (if-let [page (get route-map (:request-method request))]
+      (page request)
+      (if-let [not-found-page (get (first cur) :not-found-page)]
+        (not-found-page request); not working yet :c
+        nil)
+    )
+    (if-let [match-path (get route-map (first path))]
+    (route-navigator
+          (conj cur (first path))
+          (vec (rest path))
+          match-path
+          request)
+    (if-let [identifier (first (filterv keyword?
                                           (mapv
                                             #(if (vector? (first %)) (first (first %)))
                                             route-map)))]
-        (route-navigator
-          (conj (first path))
+       (route-navigator
+          (conj cur (first path))
           (vec (rest path))
-          (get route-map cur)
+          (get route-map (vector identifier))
           (conj request {identifier (first path)}))
-        (route-navigator
-          (conj (first path))
-          (vec (rest path))
-          (get route-map cur)
-          request))))
+       nil)))))
 
 (defn custom-router [request route-map]
-  (let [{:keys [uri request-method :as metod]} request
+  (let [{:keys [uri request-method]} request
         full-path (custom-parser uri)]
-    (route-navigator (first full-path) (vec (rest full-path)) (get route-map (first full-path)) request)))
+    (if (empty? full-path)
+      ((get route-map request-method) request)
+      (let [frest (first full-path)]
+      (route-navigator
+        (vector frest)
+        (vec (rest full-path))
+        (get route-map frest)
+        request)))))
 
 
 (defn app [request]
-  (custom-router request route-map))
+  (custom-router request custom-route-map))
 
 (defn -main
   [& args]
@@ -67,17 +91,15 @@
 ; Delete later
 #_(app {:uri "/" :request-method :get})
 #_(app {:uri "/tasks/1" :request-method :get})
-#_(app {:uri "/tasks" :request-method :get})
-#_(custom-parser "/tasks/1")
+#_(app {:uri "/tasks" :request-method :post})
+#_(custom-parser "/")
 #_(Integer/parseInt (last [1 " " "1"]))
-#_(replace {"1" (Integer/parseInt "1")} ["" "tasks" "1"])
-#_(last ["" "tasks" "1"])
-#_(clojure.string/split "/" #"/")
-#_(get (get route-map "") :get)
-#_(apply tasks [1])
-#_(apply (get (get-in route-map ["" "tasks" :param-flag]) :get) [1])
-#_(clojure.string/replace "///dfsdf///dfsd/asda//ds" #"/+" "/")
 #_(first (filterv keyword? (mapv #(if (vector? (first %)) (first (first %))) {[:id] {} :id [] "sd" {}})))
 #_(map #(map % %) [nil nil] [nil nil nil])
 #_(vec (rest [1 2 3 4 5]))
 #_(:id nil nil)
+#_(:id {:id "x"})
+#_(get-in route-map (conj [""] (:request-method {:request-method :get})))
+#_(clojure.string/split (clojure.string/replace "/" #"/+" "/") #"/")
+#_(empty? (vector (first [""])))
+#_(get route-map :get)
