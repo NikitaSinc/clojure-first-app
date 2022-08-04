@@ -20,7 +20,7 @@
 (def route-map
   {""  {:get main-page
           "tasks" {:get tasks-all
-                   :identifier {:get tasks}
+                   [:identifier] {:get tasks}
                    }
          }
    })
@@ -32,17 +32,29 @@
       [""]
       vector-path)))
 
-(defn route-navigator [path route-map]
-  (map #(map % %) path route-map))
+(defn route-navigator [cur path route-map request]
+  (if (empty? path)
+    (get route-map cur)
+      (if-let [identifier (first (filterv keyword?
+                                          (mapv
+                                            #(if (vector? (first %)) (first (first %)))
+                                            route-map)))]
+        (route-navigator
+          (conj (first path))
+          (vec (rest path))
+          (get route-map cur)
+          (conj request {identifier (first path)}))
+        (route-navigator
+          (conj (first path))
+          (vec (rest path))
+          (get route-map cur)
+          request))))
 
 (defn custom-router [request route-map]
   (let [{:keys [uri request-method :as metod]} request
-        full-path (custom-parser uri)
-        matches-norm (get-in route-map full-path)])
-  (if (nil? matches-norm)
-    (let [matches-var (map #(:identifier (first %)) (get-in route-map (pop full-path)))]
-      (if matches-var
-        ()))))
+        full-path (custom-parser uri)]
+    (route-navigator (first full-path) (vec (rest full-path)) (get route-map (first full-path)) request)))
+
 
 (defn app [request]
   (custom-router request route-map))
@@ -51,6 +63,8 @@
   [& args]
   (run-server #'app {:port 8080}))
 
+
+; Delete later
 #_(app {:uri "/" :request-method :get})
 #_(app {:uri "/tasks/1" :request-method :get})
 #_(app {:uri "/tasks" :request-method :get})
@@ -63,5 +77,7 @@
 #_(apply tasks [1])
 #_(apply (get (get-in route-map ["" "tasks" :param-flag]) :get) [1])
 #_(clojure.string/replace "///dfsdf///dfsd/asda//ds" #"/+" "/")
-#_(apply (map #(vector? (first %)) {[] {} :id [] "sd" {}}))
+#_(first (filterv keyword? (mapv #(if (vector? (first %)) (first (first %))) {[:id] {} :id [] "sd" {}})))
 #_(map #(map % %) [nil nil] [nil nil nil])
+#_(vec (rest [1 2 3 4 5]))
+#_(:id nil nil)
