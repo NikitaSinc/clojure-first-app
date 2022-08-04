@@ -20,15 +20,10 @@
 (def route-map
   {""  {:get main-page
           "tasks" {:get tasks-all
-                   [:uid] {:get tasks}
+                   :identifier {:get tasks}
                    }
          }
    })
-
-(defn custom-router
-  [{:keys [uri request-method :as method]} request map]
-  (let [full-path (custom-parser uri)]
-    full-path))
 
 (defn custom-parser [uri]
   "Returns parsed uri in vector"
@@ -37,6 +32,17 @@
       [""]
       vector-path)))
 
+(defn route-navigator [path route-map]
+  (map #(map % %) path route-map))
+
+(defn custom-router [request route-map]
+  (let [{:keys [uri request-method :as metod]} request
+        full-path (custom-parser uri)
+        matches-norm (get-in route-map full-path)])
+  (if (nil? matches-norm)
+    (let [matches-var (map #(:identifier (first %)) (get-in route-map (pop full-path)))]
+      (if matches-var
+        ()))))
 
 (defn app [request]
   (custom-router request route-map))
@@ -57,3 +63,5 @@
 #_(apply tasks [1])
 #_(apply (get (get-in route-map ["" "tasks" :param-flag]) :get) [1])
 #_(clojure.string/replace "///dfsdf///dfsd/asda//ds" #"/+" "/")
+#_(apply (map #(vector? (first %)) {[] {} :id [] "sd" {}}))
+#_(map #(map % %) [nil nil] [nil nil nil])
