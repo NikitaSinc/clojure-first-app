@@ -1,6 +1,7 @@
 (ns app
-  (:require [org.httpkit.server :as server :refer [run-server]])
-  (:require [custom-router :refer [custom-router]]))
+  (:require [org.httpkit.server :as server :refer [run-server]]
+            [custom-router :refer [custom-router]]
+            [custom-middleware :refer [my-wrap-catch my-wrap-uri-params]]))
 
 (defn handler-home [request]
   {:status 200
@@ -54,8 +55,12 @@
 
 
 
-(defn app [request]
+(defn app-naked [request]
   (custom-router request custom-route-map))
+
+(def app (-> app-naked
+             my-wrap-catch
+             my-wrap-uri-params))
 
 (defn -main
   [& args]
