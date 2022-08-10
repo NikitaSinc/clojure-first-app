@@ -17,13 +17,15 @@
 (deftest my-wrap-catch-test
   (testing "NPE case"
     (is (= nil-ex (my-excepted-fn nil-ex))))
+
   (testing "Arithmetic case"
     (is (= arith-ex (my-excepted-fn arith-ex))))
+
   (testing "Info case"
     (is (= info-ex (my-excepted-fn info-ex))))
+
   (testing "Actual case"
-    (is (= java.lang.ArithmeticException (type (my-divided-by-zero-fn)))))
-  )
+    (is (= java.lang.ArithmeticException (type (my-divided-by-zero-fn))))))
 
 (defn my-request [func]
   (fn [request]
@@ -45,13 +47,12 @@
 
   (testing "Params are wrapped"
     (is (= {:hello "world" :its "me"}
-           (my-into-uri-wrap {:uri "asd/asd/asd?hello=world&its=me" :req-flag true})))))
+           (my-into-uri-wrap {:uri "asd/asd/asd?hello=world&its=me" :req-flag true}))))
 
-(deftest my-wrap-uri-params-test-without-params
-  (testing "App is executed"
+  (testing "App is executed without params"
     (is (= true
            (my-into-uri-wrap {:uri "asd/asd/asd"}))))
 
-  (testing "Params are wrapped"
-    (is (= nil
+  (testing "No uri-params is added"
+    (is (nil?
            (my-into-uri-wrap {:uri "asd/asd/asd" :req-flag true})))))
