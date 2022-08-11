@@ -1,7 +1,29 @@
 (ns app
   (:require [org.httpkit.server :as server :refer [run-server]]
             [custom-router :refer [custom-router]]
-            [custom-middleware :refer [my-wrap-catch my-wrap-uri-params]]))
+            [custom-middleware :refer [my-wrap-catch my-wrap-uri-params]]
+            [next.jdbc :as jdbc]))
+
+(def full-config                         ;refactor later
+  {
+   :run :dev
+   :dev{
+        :server_port 8080
+        :db {
+             :dbtype "pgsql"
+             :dbname "first-clojure-app"
+             :dbuser "postres"
+             :dbpassword "1111"
+             }
+        }
+   })
+
+(defn configurator []
+  (if-let [config (get full-config (:run full-config))]
+  config
+  (throw (ex-info "Configuration is not loaded corectly" {:cause "config"}))))
+
+(def config (configurator))
 
 (defn handler-home [request]
   {:status 200
@@ -53,10 +75,8 @@
    }
 )
 
-
-
 (defn app-naked [request]
-  (custom-router request custom-route-map))
+  ((custom-router request custom-route-map)))
 
 (def app (-> app-naked
              my-wrap-catch
@@ -64,7 +84,7 @@
 
 (defn -main
   [& args]
-  (run-server #'app {:port 8080}))
+  (run-server #'app {:port (-> :server-port :dev config)}))
 
 
 ; Delete later
@@ -83,4 +103,4 @@
 #_(clojure.string/split (clojure.string/replace "/" #"/+" "/") #"/")
 #_(empty? (vector (first [""])))
 #_(get route-map :get)
-#_()
+#_(:db config)
