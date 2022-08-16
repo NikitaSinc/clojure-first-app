@@ -1,18 +1,23 @@
 (ns app
   (:require [org.httpkit.server :as server :refer [run-server]]
             [custom-router :refer [custom-router]]
-            [custom-middleware :refer [my-wrap-catch my-wrap-uri-params]]
-            [next.jdbc :as jdbc]))
+            [custom-middleware :refer [my-wrap-catch
+                                       my-wrap-uri-params
+                                       my-executor]]
+            [next.jdbc :as jdbc]
+            [dsql.pg :as dsql]))
 
 (def full-config                         ;refactor later
   {
    :run :dev
    :dev{
-        :server_port 8080
+        :server-port 8080
         :db {
-             :dbtype "pgsql"
-             :dbname "first-clojure-app"
-             :dbuser "postres"
+             :dbtype "postgresql"
+             :dbport 5432
+             :dbhost "localhost"
+             :dbname "tasks"
+             :dbuser "postgres"
              :dbpassword "1111"
              }
         }
@@ -25,26 +30,31 @@
 
 (def config (configurator))
 
+
+(def db-source
+  (let [dbconf (:db config)]
+    (jdbc/get-datasource {:dbtype (:dbtype dbconf)
+                          :dbname (:dbname dbconf)})))
+
+(defn ->db [query]
+  (with-open [conn (jdbc/get-connection db-source (-> config :db :dbuser) (-> config :db :dbpassword))]
+  (jdbc/execute! conn query)))
+
+ (->db (dsql/format
+                        {:ql/type :pg/select
+                         :select :*
+                         :from :tasks}))
+
 (defn handler-home [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body    "hello"})
 
-(defn handler-404 [request e]
-  (let [path (:path (ex-data e))]
-    {:status 404
-   :headers {"Content-Type" "text/html"}
-   :body    (format "Error-404!\nPage not found!\nNot found uri part: %s" path)}))
-
-(defn handler-500 [request e]
-  {:status 500
-   :headers {"Content-Type" "text/html"}
-   :body    (format "Error-500!\nSomething is wrong with server!\nMessage: %s" (ex-message e))})
-
 (defn handler-tasks-all [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body    "tasks"})
+   :body    "<div id='tasks-app'><div>
+            <script src='../client/public/js/main.js'><script>"})
 
 (defn handler-tasks-id [request]
   (let [{:keys [identifier]} request]
@@ -75,16 +85,27 @@
    }
 )
 
-(defn app-naked [request]
-  ((custom-router request custom-route-map)))
+(defn
+  app-naked [request & args]
+  (custom-router request custom-route-map))
 
-(def app (-> app-naked
-             my-wrap-catch
-             my-wrap-uri-params))
+(def app (->        app-naked
+                    my-executor
+                    my-wrap-catch
+                    my-wrap-uri-params
+                    ))
 
-(defn -main
-  [& args]
-  (run-server #'app {:port (-> :server-port :dev config)}))
+(defonce server (atom nil))
+
+(defn
+  -stop []
+  (when-not (nil? @server)
+    (@server :timeout 100)
+    (reset! server nil)))
+
+(defn
+  -main [& args]
+  (reset! server (run-server #'app {:port (:server-port config)})))
 
 
 ; Delete later
@@ -103,4 +124,4 @@
 #_(clojure.string/split (clojure.string/replace "/" #"/+" "/") #"/")
 #_(empty? (vector (first [""])))
 #_(get route-map :get)
-#_(:db config)
+#_(-> config :db :dbname)

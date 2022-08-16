@@ -50,16 +50,16 @@
   (testing "root case"
     (is (= test-get (custom-router {:uri "/" :request-method :get} test-route-map))))
   (testing "get case"
-    (is (= test-get (custom-router {:uri "/hello/world/lol" :request-method :get} test-route-map))))
+    (is (= test-get (first (custom-router {:uri "/hello/world/lol" :request-method :get} test-route-map)))))
   (testing "post case"
-    (is (= test-post (custom-router {:uri "/hello/world/lol" :request-method :post} test-route-map))))
+    (is (= test-post (first (custom-router {:uri "/hello/world/lol" :request-method :post} test-route-map)))))
   (testing "not found case")
-    (is (= nil (custom-router  {:uri "/hello/world/lol/wha" :request-method :get} test-route-map)))
+    (is (= nil (first (custom-router  {:uri "/hello/world/lol/wha" :request-method :get} test-route-map))))
   (testing "dictionary case"
-    (is (= test-get-id (custom-router {:uri "/hello/1" :request-method :get} test-route-map))))
+    (is (= test-get-id (first (custom-router {:uri "/hello/1" :request-method :get} test-route-map)))))
   (testing "double dictionary case"
-    (is (= test-get-id-name (custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map))))
-    (testing "execute dictionary case"
-    (is (= "ok" ((custom-router {:uri "/hello/1" :request-method :get} test-route-map) {:uid 1}))))
+    (is (= test-get-id-name (first (custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map)))))
+  (testing "execute dictionary case"
+    (is (= "ok" (eval (custom-router {:uri "/hello/1" :request-method :get} test-route-map)))))
   (testing "execute double dictionary case"
-    (is (= "ok" ((custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map) {:uid 1 :uname "nikita"})))))
+    (is (= "ok" (eval (custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map))))))

@@ -9,10 +9,9 @@
       vector-path)))
 
 (defn route-navigator [cur path route-map request]
-  (println "\n" cur "\n" path "\n" route-map "\n" (:uid request) "\n") ;delete later
   (if (empty? path)
     (if-let [page (get route-map (:request-method request))]
-      page
+      (list page request)
       nil)
     (let [next-cur (conj cur (first path))
           next-path (vec (rest path))]
@@ -31,13 +30,15 @@
             nil)))))
 
 (defn custom-router [request route-map]
+  (if (and (:uri request) (:request-method request))
   (let [{:keys [uri request-method]} request
         full-path (custom-parser uri)]
     (if (empty? full-path)
-      (get route-map request-method)
+      (list (get route-map request-method) request)
       (let [frest (first full-path)]
           (route-navigator
             (vector frest)
             (vec (rest full-path))
             (get route-map frest)
-            request)))))
+            request))))
+  nil))

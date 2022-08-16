@@ -6,9 +6,12 @@
   (throw ex))
 (defn my-divider []
   (/ 0 0))
+(defn my-resulter []
+  {:wha "sha"})
 
 (def my-excepted-fn (my-wrap-catch my-thrower))
 (def my-divided-by-zero-fn (my-wrap-catch my-divider))
+(def my-result-fn (my-wrap-catch my-resulter))
 
 (def nil-ex (new NullPointerException "my"))
 (def arith-ex (new ArithmeticException "my"))
@@ -25,7 +28,10 @@
     (is (= info-ex (my-excepted-fn info-ex))))
 
   (testing "Actual case"
-    (is (= java.lang.ArithmeticException (type (my-divided-by-zero-fn))))))
+    (is (= java.lang.ArithmeticException (type (my-divided-by-zero-fn)))))
+
+  (testing "Result case"
+    (is (= {:wha "sha"} (my-result-fn)))))
 
 (defn my-request [func]
   (fn [request]
