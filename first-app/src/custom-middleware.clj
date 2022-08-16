@@ -1,5 +1,5 @@
 (ns custom-middleware
- (:require [clojure.string :as s]))  
+ (:require [clojure.string :as s]))
 
 (defn my-wrap-catch
   [func]
@@ -28,7 +28,7 @@
   [func]
       (fn [request & args]
         (if-let [handler (apply func request args)]
-          (apply (first handler) (rest handler)))))
+            (apply (first handler) (rest handler)))))
 
 #_(if-let [uri-args (second (s/split "asd/asd/asd" #"\?"))] true false)
 #_(apply(my-wrap-uri-params (#(fn [request] ) {:uri "asd/asd/asd"})))

@@ -5,7 +5,8 @@
                                        my-wrap-uri-params
                                        my-executor]]
             [next.jdbc :as jdbc]
-            [dsql.pg :as dsql]))
+            [dsql.pg :as dsql]
+            [clojure.java.io :as io]))
 
 (def full-config                         ;refactor later
   {
@@ -53,8 +54,8 @@
 (defn handler-tasks-all [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body    "<div id='tasks-app'><div>
-            <script src='../client/public/js/main.js'><script>"})
+   :body    "<div id='tasks-app'></div>
+            <script src='resources/main.js'></script>"})
 
 (defn handler-tasks-id [request]
   (let [{:keys [identifier]} request]
@@ -67,6 +68,16 @@
                   {
                    :status 500
                    })))
+
+(defn file-handler [request]
+  (let [{:keys [identifier]} request]
+    {
+     :status 200
+     :headers {"Content-Type" "application/javascript"
+               "charset" "utf-8"}
+     :body (slurp (io/resource identifier))
+     })
+  )
 
 (def custom-route-map
    {
@@ -82,6 +93,7 @@
     "throw500" {
                 :get handler-fake-500
                 }
+    "resources" {[:identifier] {:get file-handler}}
    }
 )
 
@@ -109,19 +121,8 @@
 
 
 ; Delete later
-#_(app {:uri "/sdasd/asd" :request-method :get})
-#_(app {:uri "/throw500" :request-method :get})
-#_(app {:uri "/tasks/1" :request-method :get})
-#_(app {:uri "/tasks" :request-method :post})
-#_(custom-parser "/")
-#_(Integer/parseInt (last [1 " " "1"]))
-#_(first (first (filterv vector? (keys  {[:id] {["r"] {:red "rte"}} :id ["rew" "dsf"] "sd" {"fed" {"med" {"fer" "dfs"}}}}))))
-#_(map #(map % %) [nil nil] [nil nil nil])
-#_(vec (rest [1 2 3 4 5]))
-#_(:id nil nil)
-#_(:id {:id "x"})
-#_(get-in route-map (conj [""] (:request-method {:request-method :get})))
-#_(clojure.string/split (clojure.string/replace "/" #"/+" "/") #"/")
-#_(empty? (vector (first [""])))
-#_(get route-map :get)
-#_(-> config :db :dbname)
+#_(-main)
+#_(-stop)
+
+#_(type (first (app-naked {:uri "/resources/main.js" :request-method :get})))
+#_(clojure.java.io/resource "public/js/main.js")
