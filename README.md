@@ -7,6 +7,8 @@ Backend libraries:
 - seancorfield/next.jdbc
 - healthsamurai/dsql
 
+PS: router and middleware are written by me for learning puposes.
+
 Frontend libraries:
 - thheller/shadow-cljs
 - reagent
