@@ -1,12 +1,9 @@
 {
- :paths ["src" "resources" "client/resources" "client/resources/public/js"]
+ :paths ["src" "client/src/main" "resources" "client/resources" "client/resources/public/js" "client/resources/public/out/stylo/css"]
+
  :deps
-  {
-    http-kit/http-kit {:mvn/version "2.7.0-alpha1"}
-    seancorfield/next.jdbc {:mvn/version "1.2.659"}
-    org.postgresql/postgresql {:mvn/version "42.4.1"}
-    io.github.healthsamurai/dsql {:git/url "https://github.com/HealthSamurai/dsql"
-                                  :sha "0896397e3237cc5435510accbe73d9df1c90b23e"}
-    org.clojure/clojurescript {:mvn/version "1.11.60"}
-   }
-}
+  {http-kit/http-kit {:mvn/version "2.7.0-alpha1"}
+   seancorfield/next.jdbc {:mvn/version "1.2.659"}
+   org.postgresql/postgresql {:mvn/version "42.4.1"}
+   io.github.healthsamurai/dsql {:git/url "https://github.com/HealthSamurai/dsql"
+                                 :sha "0896397e3237cc5435510accbe73d9df1c90b23e"}}}

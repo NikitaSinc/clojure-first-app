@@ -6,7 +6,8 @@
                                        my-executor]]
             [next.jdbc :as jdbc]
             [dsql.pg :as dsql]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [clojure.string :as s]))
 
 (def full-config                         ;refactor later
   {
@@ -53,9 +54,16 @@
 
 (defn handler-tasks-all [request]
   {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body    "<div id='tasks-app'></div>
-            <script src='resources/main.js'></script>"})
+   :headers {"Content-Type" "text/html"
+             }
+
+   :body    "<head>
+                <link href='resources/stylo.css' rel='stylesheet'>
+            </head>
+            <body>
+                <div id='tasks-app'></div>
+                <script src='resources/main.js'></script>
+            </body>"})
 
 (defn handler-tasks-id [request]
   (let [{:keys [identifier]} request]
@@ -70,14 +78,21 @@
                    })))
 
 (defn file-handler [request]
-  (let [{:keys [identifier]} request]
+  (let [{:keys [identifier]} request
+        file-format (second (s/split identifier #"."))]
+    (if (= "js" file-format)      ;I know it's ugly -> Missing file-handling middleware (: Refactor later
     {
      :status 200
      :headers {"Content-Type" "application/javascript"
                "charset" "utf-8"}
      :body (slurp (io/resource identifier))
-     })
-  )
+     }
+     {
+     :status 200
+     :headers {"Content-Type" "text/css"
+               "charset" "utf-8"}
+     :body (slurp (io/resource identifier))
+     })))
 
 (def custom-route-map
    {
@@ -93,7 +108,7 @@
     "throw500" {
                 :get handler-fake-500
                 }
-    "resources" {[:identifier] {:get file-handler}}
+    "resources" {[:identifier] {:get file-handler}}         ;TODO: make only public
    }
 )
 
