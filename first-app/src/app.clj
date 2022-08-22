@@ -7,7 +7,8 @@
             [next.jdbc :as jdbc]
             [dsql.pg :as dsql]
             [clojure.java.io :as io]
-            [clojure.string :as s]))
+            [clojure.string :as s]
+            [clojure.data.json :as json]))
 
 (def full-config                         ;refactor later
   {
@@ -42,10 +43,17 @@
   (with-open [conn (jdbc/get-connection db-source (-> config :db :dbuser) (-> config :db :dbpassword))]
   (jdbc/execute! conn query)))
 
- (->db (dsql/format
+(defn tasks-all->db []
+  (->db (dsql/format
                         {:ql/type :pg/select
                          :select :*
-                         :from :tasks}))
+                         :from :tasks})))
+
+(defn handler-get-all-tasks [request]
+  {:status 200
+   :headers {"Content-Type" "text/json"}
+   :body (json/write-str (tasks-all->db))
+   })
 
 (defn handler-home [request]
   {:status 200
@@ -57,13 +65,7 @@
    :headers {"Content-Type" "text/html"
              }
 
-   :body    "<head>
-                <link href='resources/stylo.css' rel='stylesheet'>
-            </head>
-            <body>
-                <div id='tasks-app'></div>
-                <script src='resources/main.js'></script>
-            </body>"})
+   :body    (slurp (io/resource "index.html"))})
 
 (defn handler-tasks-id [request]
   (let [{:keys [identifier]} request]
@@ -99,6 +101,7 @@
     :get handler-home
 
     "tasks" {
+             "get" {:get handler-get-all-tasks}
              :get handler-tasks-all
              :post handler-tasks-all
              [:identifier] {
