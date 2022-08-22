@@ -33,7 +33,7 @@
   [:table
     [:tbody
      [:tr {:class (c :table-row)} [:td "1"] [:td "task-1"]]
-     [:tr {:class (c :table-row)} [:td "2"] [:td "task-2"]]]])
+     [:tr {:class (c :table-row)} [:td "2"] [:td "task-2"]]]]))
 
 (defn strange-button []
   (let [state (r/atom {:color "green" :title "i am green"})]

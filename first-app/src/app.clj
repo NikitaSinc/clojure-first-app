@@ -81,7 +81,7 @@
 
 (defn file-handler [request]
   (let [{:keys [identifier]} request
-        file-format (second (s/split identifier #"."))]
+        file-format (second (s/split identifier #"\."))]
     (if (= "js" file-format)      ;I know it's ugly -> Missing file-handling middleware (: Refactor later
     {
      :status 200
