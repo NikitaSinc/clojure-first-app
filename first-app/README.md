@@ -1,1 +1,0 @@
-# clojure-first-app
