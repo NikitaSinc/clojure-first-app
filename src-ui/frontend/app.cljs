@@ -44,7 +44,7 @@
                            [:pl 10]
                            [:pt 10])}
    [:div.content {:class (c :w-auto)}
-    [:h1 {:class (c :text-lg)} "Taskss"]
+    [:h1 {:class (c :text-lg)} "Tasks"]
     tasks-grid]])
 
 (defonce root (createRoot (js/document.getElementById "tasks-app")))

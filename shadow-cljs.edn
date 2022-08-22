@@ -6,8 +6,8 @@
  {:frontend
     {:target     :browser
      :output-dir "resources/public/js"
-     :build-hooks [(stylo.shadow/reload "resources/stylo/stylo.css")]
-     :modules    {:src-ui {:init-fn frontend.app/init}}
+     :build-hooks [(stylo.shadow/reload "resources/public/stylo/stylo.css")]
+     :modules    {:main {:init-fn frontend.app/init}}
      :compiler-options {:infer-externs :auto}
 
     :dev
