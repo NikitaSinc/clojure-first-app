@@ -18,6 +18,10 @@
     "error"
     "ok"))
 
+(defn all-handler [request]
+  (let [{:keys [rest-path]} request]
+    rest-path))
+
 (def test-route-map
    {:get test-get
    "hello" {:get test-get
@@ -33,6 +37,7 @@
                          }
                    }
            }
+    "resources" {:all {:get all-handler}}
    }
 )
 
@@ -48,7 +53,7 @@
 
 (deftest test-custom-router
   (testing "root case"
-    (is (= test-get (custom-router {:uri "/" :request-method :get} test-route-map))))
+    (is (= test-get (first (custom-router {:uri "/" :request-method :get} test-route-map)))))
   (testing "get case"
     (is (= test-get (first (custom-router {:uri "/hello/world/lol" :request-method :get} test-route-map)))))
   (testing "post case"
@@ -62,4 +67,7 @@
   (testing "execute dictionary case"
     (is (= "ok" (eval (custom-router {:uri "/hello/1" :request-method :get} test-route-map)))))
   (testing "execute double dictionary case"
-    (is (= "ok" (eval (custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map))))))
+    (is (= "ok" (eval (custom-router {:uri "/hello/1/nikita" :request-method :get} test-route-map)))))
+  (testing "all case"
+    (is (= "find/wha/lol" (eval (custom-router {:uri "/resources/find/wha/lol" :request-method :get} test-route-map))))
+    (is (= nil (eval (custom-router {:uri "/resources" :request-method :get} test-route-map))))))

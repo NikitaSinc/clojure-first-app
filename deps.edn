@@ -1,5 +1,5 @@
 {
- :paths ["src" "src_ui" "test" "resources" "resources/public" "resources/public/js" "resources/public/stylo/"]
+ :paths ["src" "src-ui" "test" "resources" "resources/public" "resources/public/js" "resources/public/stylo/"]
 
 
  :deps

@@ -8,7 +8,17 @@
       []
       vector-path)))
 
+(def make-path-from-vector-entry (fn [p] (make-path-from-vector (rest p) (first p))))
+
+(defn make-path-from-vector [path-vector path-string]
+  (if (empty? path-vector)
+    path-string
+    (make-path-from-vector
+      (rest path-vector)
+      (str path-string "/" (first path-vector)))))
+
 (defn route-navigator [cur path route-map request]
+  ;(println cur path route-map request)
   (if (empty? path)
     (if-let [page (get route-map (:request-method request))]
       (list page request)
@@ -27,7 +37,13 @@
                 next-path
                 (get route-map (vector identifier))
                 (conj request {identifier (first path)}))
-            nil)))))
+            (if (= :all (first (filterv keyword? (keys route-map))))
+            (route-navigator
+              []
+              []
+              (get route-map :all)
+              (conj request {:rest-path (make-path-from-vector-entry path)}))
+            nil))))))
 
 (defn custom-router [request route-map]
   (if (and (:uri request) (:request-method request))

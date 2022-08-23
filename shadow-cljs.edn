@@ -11,5 +11,6 @@
      :compiler-options {:infer-externs :auto}
 
     :dev
-        {:devtools {:after-load frontend.app/re-render}
+        {:devtools {:after-load frontend.app/re-render
+                    :whatch-dir "resources/public/stylo/stylo.css"}
          :compiler-options {:optimizations :none}}}}}

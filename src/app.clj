@@ -80,20 +80,20 @@
                    })))
 
 (defn file-handler [request]
-  (let [{:keys [identifier]} request
-        file-format (second (s/split identifier #"\."))]
+  (let [{:keys [rest-path]} request
+        file-format (second (s/split rest-path #"\."))]
     (if (= "js" file-format)      ;I know it's ugly -> Missing file-handling middleware (: Refactor later
     {
      :status 200
      :headers {"Content-Type" "application/javascript"
                "charset" "utf-8"}
-     :body (slurp (io/resource identifier))
+     :body (slurp (io/resource rest-path))
      }
      {
      :status 200
      :headers {"Content-Type" "text/css"
                "charset" "utf-8"}
-     :body (slurp (io/resource identifier))
+     :body (slurp (io/resource rest-path))
      })))
 
 (def custom-route-map
@@ -111,8 +111,8 @@
     "throw500" {
                 :get handler-fake-500
                 }
-    "resources" {[:identifier] {:get file-handler}}         ;TODO: make only public
-   }
+    "resources" {:all {:get file-handler}}
+    }
 )
 
 (defn
