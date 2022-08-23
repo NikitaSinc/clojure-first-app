@@ -26,14 +26,14 @@ return clojure.set.union.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(argumen
 break;
 default:
 var args_arr__5794__auto__ = [];
-var len__5769__auto___29228 = arguments.length;
-var i__5770__auto___29229 = (0);
+var len__5769__auto___29206 = arguments.length;
+var i__5770__auto___29207 = (0);
 while(true){
-if((i__5770__auto___29229 < len__5769__auto___29228)){
-args_arr__5794__auto__.push((arguments[i__5770__auto___29229]));
+if((i__5770__auto___29207 < len__5769__auto___29206)){
+args_arr__5794__auto__.push((arguments[i__5770__auto___29207]));
 
-var G__29230 = (i__5770__auto___29229 + (1));
-i__5770__auto___29229 = G__29230;
+var G__29209 = (i__5770__auto___29207 + (1));
+i__5770__auto___29207 = G__29209;
 continue;
 } else {
 }
@@ -95,14 +95,14 @@ return clojure.set.intersection.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(
 break;
 default:
 var args_arr__5794__auto__ = [];
-var len__5769__auto___29263 = arguments.length;
-var i__5770__auto___29264 = (0);
+var len__5769__auto___29212 = arguments.length;
+var i__5770__auto___29213 = (0);
 while(true){
-if((i__5770__auto___29264 < len__5769__auto___29263)){
-args_arr__5794__auto__.push((arguments[i__5770__auto___29264]));
+if((i__5770__auto___29213 < len__5769__auto___29212)){
+args_arr__5794__auto__.push((arguments[i__5770__auto___29213]));
 
-var G__29265 = (i__5770__auto___29264 + (1));
-i__5770__auto___29264 = G__29265;
+var G__29214 = (i__5770__auto___29213 + (1));
+i__5770__auto___29213 = G__29214;
 continue;
 } else {
 }
@@ -122,10 +122,10 @@ return s1;
 (clojure.set.intersection.cljs$core$IFn$_invoke$arity$2 = (function (s1,s2){
 while(true){
 if((cljs.core.count(s2) < cljs.core.count(s1))){
-var G__29271 = s2;
-var G__29272 = s1;
-s1 = G__29271;
-s2 = G__29272;
+var G__29215 = s2;
+var G__29216 = s1;
+s1 = G__29215;
+s2 = G__29216;
 continue;
 } else {
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3(((function (s1,s2){
@@ -177,14 +177,14 @@ return clojure.set.difference.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(ar
 break;
 default:
 var args_arr__5794__auto__ = [];
-var len__5769__auto___29281 = arguments.length;
-var i__5770__auto___29282 = (0);
+var len__5769__auto___29223 = arguments.length;
+var i__5770__auto___29224 = (0);
 while(true){
-if((i__5770__auto___29282 < len__5769__auto___29281)){
-args_arr__5794__auto__.push((arguments[i__5770__auto___29282]));
+if((i__5770__auto___29224 < len__5769__auto___29223)){
+args_arr__5794__auto__.push((arguments[i__5770__auto___29224]));
 
-var G__29283 = (i__5770__auto___29282 + (1));
-i__5770__auto___29282 = G__29283;
+var G__29225 = (i__5770__auto___29224 + (1));
+i__5770__auto___29224 = G__29225;
 continue;
 } else {
 }
@@ -247,18 +247,18 @@ return cljs.core.disj.cljs$core$IFn$_invoke$arity$2(s,k);
  * Returns a rel of the elements of xrel with only the keys in ks
  */
 clojure.set.project = (function clojure$set$project(xrel,ks){
-return cljs.core.set(cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__29178_SHARP_){
-return cljs.core.select_keys(p1__29178_SHARP_,ks);
+return cljs.core.set(cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__29175_SHARP_){
+return cljs.core.select_keys(p1__29175_SHARP_,ks);
 }),xrel));
 });
 /**
  * Returns the map with the keys in kmap renamed to the vals in kmap
  */
 clojure.set.rename_keys = (function clojure$set$rename_keys(map,kmap){
-return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (m,p__29181){
-var vec__29182 = p__29181;
-var old = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29182,(0),null);
-var new$ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29182,(1),null);
+return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (m,p__29176){
+var vec__29177 = p__29176;
+var old = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29177,(0),null);
+var new$ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29177,(1),null);
 if(cljs.core.contains_QMARK_(map,old)){
 return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(m,new$,cljs.core.get.cljs$core$IFn$_invoke$arity$2(map,old));
 } else {
@@ -270,8 +270,8 @@ return m;
  * Returns a rel of the maps in xrel with the keys in kmap renamed to the vals in kmap
  */
 clojure.set.rename = (function clojure$set$rename(xrel,kmap){
-return cljs.core.set(cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__29185_SHARP_){
-return clojure.set.rename_keys(p1__29185_SHARP_,kmap);
+return cljs.core.set(cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__29182_SHARP_){
+return clojure.set.rename_keys(p1__29182_SHARP_,kmap);
 }),xrel));
 });
 /**
@@ -317,13 +317,13 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 (clojure.set.join.cljs$core$IFn$_invoke$arity$2 = (function (xrel,yrel){
 if(((cljs.core.seq(xrel)) && (cljs.core.seq(yrel)))){
 var ks = clojure.set.intersection.cljs$core$IFn$_invoke$arity$2(cljs.core.set(cljs.core.keys(cljs.core.first(xrel))),cljs.core.set(cljs.core.keys(cljs.core.first(yrel))));
-var vec__29195 = (((cljs.core.count(xrel) <= cljs.core.count(yrel)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [xrel,yrel], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [yrel,xrel], null));
-var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29195,(0),null);
-var s = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29195,(1),null);
+var vec__29192 = (((cljs.core.count(xrel) <= cljs.core.count(yrel)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [xrel,yrel], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [yrel,xrel], null));
+var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29192,(0),null);
+var s = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29192,(1),null);
 var idx = clojure.set.index(r,ks);
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (ret,x){
-var found = (function (){var G__29200 = cljs.core.select_keys(x,ks);
-return (idx.cljs$core$IFn$_invoke$arity$1 ? idx.cljs$core$IFn$_invoke$arity$1(G__29200) : idx.call(null,G__29200));
+var found = (function (){var G__29195 = cljs.core.select_keys(x,ks);
+return (idx.cljs$core$IFn$_invoke$arity$1 ? idx.cljs$core$IFn$_invoke$arity$1(G__29195) : idx.call(null,G__29195));
 })();
 if(cljs.core.truth_(found)){
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (p1__29186_SHARP_,p2__29187_SHARP_){
@@ -339,14 +339,14 @@ return cljs.core.PersistentHashSet.EMPTY;
 }));
 
 (clojure.set.join.cljs$core$IFn$_invoke$arity$3 = (function (xrel,yrel,km){
-var vec__29201 = (((cljs.core.count(xrel) <= cljs.core.count(yrel)))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [xrel,yrel,clojure.set.map_invert(km)], null):new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [yrel,xrel,km], null));
-var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29201,(0),null);
-var s = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29201,(1),null);
-var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29201,(2),null);
+var vec__29196 = (((cljs.core.count(xrel) <= cljs.core.count(yrel)))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [xrel,yrel,clojure.set.map_invert(km)], null):new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [yrel,xrel,km], null));
+var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29196,(0),null);
+var s = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29196,(1),null);
+var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__29196,(2),null);
 var idx = clojure.set.index(r,cljs.core.vals(k));
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (ret,x){
-var found = (function (){var G__29204 = clojure.set.rename_keys(cljs.core.select_keys(x,cljs.core.keys(k)),k);
-return (idx.cljs$core$IFn$_invoke$arity$1 ? idx.cljs$core$IFn$_invoke$arity$1(G__29204) : idx.call(null,G__29204));
+var found = (function (){var G__29199 = clojure.set.rename_keys(cljs.core.select_keys(x,cljs.core.keys(k)),k);
+return (idx.cljs$core$IFn$_invoke$arity$1 ? idx.cljs$core$IFn$_invoke$arity$1(G__29199) : idx.call(null,G__29199));
 })();
 if(cljs.core.truth_(found)){
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3((function (p1__29188_SHARP_,p2__29189_SHARP_){
@@ -364,16 +364,16 @@ return ret;
  * Is set1 a subset of set2?
  */
 clojure.set.subset_QMARK_ = (function clojure$set$subset_QMARK_(set1,set2){
-return (((cljs.core.count(set1) <= cljs.core.count(set2))) && (cljs.core.every_QMARK_((function (p1__29205_SHARP_){
-return cljs.core.contains_QMARK_(set2,p1__29205_SHARP_);
+return (((cljs.core.count(set1) <= cljs.core.count(set2))) && (cljs.core.every_QMARK_((function (p1__29201_SHARP_){
+return cljs.core.contains_QMARK_(set2,p1__29201_SHARP_);
 }),set1)));
 });
 /**
  * Is set1 a superset of set2?
  */
 clojure.set.superset_QMARK_ = (function clojure$set$superset_QMARK_(set1,set2){
-return (((cljs.core.count(set1) >= cljs.core.count(set2))) && (cljs.core.every_QMARK_((function (p1__29211_SHARP_){
-return cljs.core.contains_QMARK_(set1,p1__29211_SHARP_);
+return (((cljs.core.count(set1) >= cljs.core.count(set2))) && (cljs.core.every_QMARK_((function (p1__29202_SHARP_){
+return cljs.core.contains_QMARK_(set1,p1__29202_SHARP_);
 }),set2)));
 });
 

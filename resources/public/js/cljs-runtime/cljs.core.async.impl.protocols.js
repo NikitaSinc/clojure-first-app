@@ -6,7 +6,7 @@ cljs.core.async.impl.protocols.MAX_QUEUE_SIZE = (1024);
  */
 cljs.core.async.impl.protocols.ReadPort = function(){};
 
-var cljs$core$async$impl$protocols$ReadPort$take_BANG_$dyn_29512 = (function (port,fn1_handler){
+var cljs$core$async$impl$protocols$ReadPort$take_BANG_$dyn_29522 = (function (port,fn1_handler){
 var x__5393__auto__ = (((port == null))?null:port);
 var m__5394__auto__ = (cljs.core.async.impl.protocols.take_BANG_[goog.typeOf(x__5393__auto__)]);
 if((!((m__5394__auto__ == null)))){
@@ -27,7 +27,7 @@ cljs.core.async.impl.protocols.take_BANG_ = (function cljs$core$async$impl$proto
 if((((!((port == null)))) && ((!((port.cljs$core$async$impl$protocols$ReadPort$take_BANG_$arity$2 == null)))))){
 return port.cljs$core$async$impl$protocols$ReadPort$take_BANG_$arity$2(port,fn1_handler);
 } else {
-return cljs$core$async$impl$protocols$ReadPort$take_BANG_$dyn_29512(port,fn1_handler);
+return cljs$core$async$impl$protocols$ReadPort$take_BANG_$dyn_29522(port,fn1_handler);
 }
 });
 
@@ -37,7 +37,7 @@ return cljs$core$async$impl$protocols$ReadPort$take_BANG_$dyn_29512(port,fn1_han
  */
 cljs.core.async.impl.protocols.WritePort = function(){};
 
-var cljs$core$async$impl$protocols$WritePort$put_BANG_$dyn_29517 = (function (port,val,fn1_handler){
+var cljs$core$async$impl$protocols$WritePort$put_BANG_$dyn_29529 = (function (port,val,fn1_handler){
 var x__5393__auto__ = (((port == null))?null:port);
 var m__5394__auto__ = (cljs.core.async.impl.protocols.put_BANG_[goog.typeOf(x__5393__auto__)]);
 if((!((m__5394__auto__ == null)))){
@@ -59,7 +59,7 @@ cljs.core.async.impl.protocols.put_BANG_ = (function cljs$core$async$impl$protoc
 if((((!((port == null)))) && ((!((port.cljs$core$async$impl$protocols$WritePort$put_BANG_$arity$3 == null)))))){
 return port.cljs$core$async$impl$protocols$WritePort$put_BANG_$arity$3(port,val,fn1_handler);
 } else {
-return cljs$core$async$impl$protocols$WritePort$put_BANG_$dyn_29517(port,val,fn1_handler);
+return cljs$core$async$impl$protocols$WritePort$put_BANG_$dyn_29529(port,val,fn1_handler);
 }
 });
 
@@ -69,7 +69,7 @@ return cljs$core$async$impl$protocols$WritePort$put_BANG_$dyn_29517(port,val,fn1
  */
 cljs.core.async.impl.protocols.Channel = function(){};
 
-var cljs$core$async$impl$protocols$Channel$close_BANG_$dyn_29530 = (function (chan){
+var cljs$core$async$impl$protocols$Channel$close_BANG_$dyn_29534 = (function (chan){
 var x__5393__auto__ = (((chan == null))?null:chan);
 var m__5394__auto__ = (cljs.core.async.impl.protocols.close_BANG_[goog.typeOf(x__5393__auto__)]);
 if((!((m__5394__auto__ == null)))){
@@ -87,7 +87,7 @@ cljs.core.async.impl.protocols.close_BANG_ = (function cljs$core$async$impl$prot
 if((((!((chan == null)))) && ((!((chan.cljs$core$async$impl$protocols$Channel$close_BANG_$arity$1 == null)))))){
 return chan.cljs$core$async$impl$protocols$Channel$close_BANG_$arity$1(chan);
 } else {
-return cljs$core$async$impl$protocols$Channel$close_BANG_$dyn_29530(chan);
+return cljs$core$async$impl$protocols$Channel$close_BANG_$dyn_29534(chan);
 }
 });
 
@@ -301,8 +301,8 @@ return cljs$core$async$impl$protocols$Buffer$close_buf_BANG_$dyn_29564(b);
 });
 
 cljs.core.async.impl.protocols.add_BANG_ = (function cljs$core$async$impl$protocols$add_BANG_(var_args){
-var G__29505 = arguments.length;
-switch (G__29505) {
+var G__29511 = arguments.length;
+switch (G__29511) {
 case 1:
 return cljs.core.async.impl.protocols.add_BANG_.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

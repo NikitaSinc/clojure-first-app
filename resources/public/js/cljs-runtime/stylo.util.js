@@ -1,14 +1,14 @@
 goog.provide('stylo.util');
 stylo.util.format = (function stylo$util$format(var_args){
 var args__5775__auto__ = [];
-var len__5769__auto___41703 = arguments.length;
-var i__5770__auto___41704 = (0);
+var len__5769__auto___41719 = arguments.length;
+var i__5770__auto___41720 = (0);
 while(true){
-if((i__5770__auto___41704 < len__5769__auto___41703)){
-args__5775__auto__.push((arguments[i__5770__auto___41704]));
+if((i__5770__auto___41720 < len__5769__auto___41719)){
+args__5775__auto__.push((arguments[i__5770__auto___41720]));
 
-var G__41705 = (i__5770__auto___41704 + (1));
-i__5770__auto___41704 = G__41705;
+var G__41721 = (i__5770__auto___41720 + (1));
+i__5770__auto___41720 = G__41721;
 continue;
 } else {
 }
@@ -26,21 +26,21 @@ return cljs.core.apply.cljs$core$IFn$_invoke$arity$3(goog.string.format,fmt,args
 (stylo.util.format.cljs$lang$maxFixedArity = (1));
 
 /** @this {Function} */
-(stylo.util.format.cljs$lang$applyTo = (function (seq41587){
-var G__41588 = cljs.core.first(seq41587);
-var seq41587__$1 = cljs.core.next(seq41587);
+(stylo.util.format.cljs$lang$applyTo = (function (seq41669){
+var G__41670 = cljs.core.first(seq41669);
+var seq41669__$1 = cljs.core.next(seq41669);
 var self__5754__auto__ = this;
-return self__5754__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41588,seq41587__$1);
+return self__5754__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41670,seq41669__$1);
 }));
 
 stylo.util.with_alpha = (function stylo$util$with_alpha(color,variable){
 var temp__5802__auto__ = garden.color.hex__GT_rgb(color);
 if(cljs.core.truth_(temp__5802__auto__)){
-var map__41599 = temp__5802__auto__;
-var map__41599__$1 = cljs.core.__destructure_map(map__41599);
-var red = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41599__$1,new cljs.core.Keyword(null,"red","red",-969428204));
-var green = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41599__$1,new cljs.core.Keyword(null,"green","green",-945526839));
-var blue = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41599__$1,new cljs.core.Keyword(null,"blue","blue",-622100620));
+var map__41691 = temp__5802__auto__;
+var map__41691__$1 = cljs.core.__destructure_map(map__41691);
+var red = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41691__$1,new cljs.core.Keyword(null,"red","red",-969428204));
+var green = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41691__$1,new cljs.core.Keyword(null,"green","green",-945526839));
+var blue = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__41691__$1,new cljs.core.Keyword(null,"blue","blue",-622100620));
 return stylo.util.format.cljs$core$IFn$_invoke$arity$variadic("rgba(%d,%d,%d,var(%s))",cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([red,green,blue,cljs.core.name(variable)], 0));
 } else {
 return color;
@@ -55,15 +55,15 @@ return and__5043__auto__;
 }
 });
 stylo.util.parse_str_ratio = (function stylo$util$parse_str_ratio(s){
-var vec__41649 = cljs.core.re_matches(/(-?\d+)\/(\d+)/,s);
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41649,(0),null);
-var n = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41649,(1),null);
-var d = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41649,(2),null);
+var vec__41700 = cljs.core.re_matches(/(-?\d+)\/(\d+)/,s);
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41700,(0),null);
+var n = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41700,(1),null);
+var d = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__41700,(2),null);
 return (parseFloat(n) / parseFloat(d));
 });
 stylo.util.as_unit = (function stylo$util$as_unit(var_args){
-var G__41672 = arguments.length;
-switch (G__41672) {
+var G__41709 = arguments.length;
+switch (G__41709) {
 case 1:
 return stylo.util.as_unit.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -92,9 +92,9 @@ return garden.units.percent(((100) * stylo.util.parse_str_ratio(v)));
 if(typeof v === 'string'){
 return v;
 } else {
-var G__41687 = preferred_unit;
-var G__41687__$1 = (((G__41687 instanceof cljs.core.Keyword))?G__41687.fqn:null);
-switch (G__41687__$1) {
+var G__41718 = preferred_unit;
+var G__41718__$1 = (((G__41718 instanceof cljs.core.Keyword))?G__41718.fqn:null);
+switch (G__41718__$1) {
 case "ms":
 return garden.units.ms(v);
 
@@ -116,7 +116,7 @@ return garden.units.percent(v);
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__41687__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__41718__$1)].join('')));
 
 }
 

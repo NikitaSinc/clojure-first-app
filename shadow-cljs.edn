@@ -3,14 +3,14 @@
 
  ;:dev-http {9999 "public"}
  :builds
- {:frontend
+ {:ui
     {:target     :browser
      :output-dir "resources/public/js"
      :build-hooks [(stylo.shadow/reload "resources/public/stylo/stylo.css")]
-     :modules    {:main {:init-fn frontend.app/init}}
+     :modules    {:main {:init-fn app/init}}
      :compiler-options {:infer-externs :auto}
 
     :dev
-        {:devtools {:after-load frontend.app/re-render
+        {:devtools {:after-load app/re-render
                     :whatch-dir "resources/public/stylo/stylo.css"}
          :compiler-options {:optimizations :none}}}}}

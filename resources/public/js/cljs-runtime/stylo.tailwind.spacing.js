@@ -37,47 +37,47 @@ return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"ma
 })]);
 stylo.rule.defrules.cljs$core$IFn$_invoke$arity$1(stylo.tailwind.spacing.margin);
 stylo.rule.rule.cljs$core$IMultiFn$_add_method$arity$3(null,new cljs.core.Keyword(null,"space-x","space-x",-341759719),(function() {
-var G__41938 = null;
-var G__41938__1 = (function (_){
+var G__42012 = null;
+var G__42012__1 = (function (_){
 return stylo.rule.rule.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"space-x","space-x",-341759719),(1));
 });
-var G__41938__2 = (function (_,x){
+var G__42012__2 = (function (_,x){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, ["&>*+*",new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"--space-x-reverse","--space-x-reverse",641597475),(0),new cljs.core.Keyword(null,"margin-right","margin-right",809689658),stylo.util.format.cljs$core$IFn$_invoke$arity$variadic("calc(%s * var(--space-x-reverse))",cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([garden.compiler.render_css(stylo.util.as_unit.cljs$core$IFn$_invoke$arity$1(x))], 0)),new cljs.core.Keyword(null,"margin-left","margin-left",2015598377),stylo.util.format.cljs$core$IFn$_invoke$arity$variadic("calc(%s * calc(1 - var(--space-x-reverse)))",cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([garden.compiler.render_css(stylo.util.as_unit.cljs$core$IFn$_invoke$arity$1(x))], 0))], null)], null)], null);
 });
-G__41938 = function(_,x){
+G__42012 = function(_,x){
 switch(arguments.length){
 case 1:
-return G__41938__1.call(this,_);
+return G__42012__1.call(this,_);
 case 2:
-return G__41938__2.call(this,_,x);
+return G__42012__2.call(this,_,x);
 }
 throw(new Error('Invalid arity: ' + arguments.length));
 };
-G__41938.cljs$core$IFn$_invoke$arity$1 = G__41938__1;
-G__41938.cljs$core$IFn$_invoke$arity$2 = G__41938__2;
-return G__41938;
+G__42012.cljs$core$IFn$_invoke$arity$1 = G__42012__1;
+G__42012.cljs$core$IFn$_invoke$arity$2 = G__42012__2;
+return G__42012;
 })()
 );
 stylo.rule.rule.cljs$core$IMultiFn$_add_method$arity$3(null,new cljs.core.Keyword(null,"space-y","space-y",-1487097227),(function() {
-var G__41940 = null;
-var G__41940__1 = (function (_){
+var G__42013 = null;
+var G__42013__1 = (function (_){
 return stylo.rule.rule.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"space-y","space-y",-1487097227),(1));
 });
-var G__41940__2 = (function (_,x){
+var G__42013__2 = (function (_,x){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, ["&>*+*",new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"--space-y-reverse","--space-y-reverse",1670535339),(0),new cljs.core.Keyword(null,"margin-bottom","margin-bottom",388334941),stylo.util.format.cljs$core$IFn$_invoke$arity$variadic("calc(%s * var(--space-y-reverse))",cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([garden.compiler.render_css(stylo.util.as_unit.cljs$core$IFn$_invoke$arity$1(x))], 0)),new cljs.core.Keyword(null,"margin-top","margin-top",392161226),stylo.util.format.cljs$core$IFn$_invoke$arity$variadic("calc(%s * calc(1 - var(--space-y-reverse)))",cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([garden.compiler.render_css(stylo.util.as_unit.cljs$core$IFn$_invoke$arity$1(x))], 0))], null)], null)], null);
 });
-G__41940 = function(_,x){
+G__42013 = function(_,x){
 switch(arguments.length){
 case 1:
-return G__41940__1.call(this,_);
+return G__42013__1.call(this,_);
 case 2:
-return G__41940__2.call(this,_,x);
+return G__42013__2.call(this,_,x);
 }
 throw(new Error('Invalid arity: ' + arguments.length));
 };
-G__41940.cljs$core$IFn$_invoke$arity$1 = G__41940__1;
-G__41940.cljs$core$IFn$_invoke$arity$2 = G__41940__2;
-return G__41940;
+G__42013.cljs$core$IFn$_invoke$arity$1 = G__42013__1;
+G__42013.cljs$core$IFn$_invoke$arity$2 = G__42013__2;
+return G__42013;
 })()
 );
 stylo.rule.rule.cljs$core$IMultiFn$_add_method$arity$3(null,new cljs.core.Keyword(null,"space-x-reverse","space-x-reverse",-1707954012),(function (_){

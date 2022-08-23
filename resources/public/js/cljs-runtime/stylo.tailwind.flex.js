@@ -4,47 +4,47 @@ stylo.rule.defrules.cljs$core$IFn$_invoke$arity$1(stylo.tailwind.flex.flex);
 stylo.tailwind.flex.flex_direction = new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"flex-row","flex-row",-2147157694),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-direction","flex-direction",364609438),"row"], null),new cljs.core.Keyword(null,"flex-row-reverse","flex-row-reverse",238101280),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-direction","flex-direction",364609438),"row-reverse"], null),new cljs.core.Keyword(null,"flex-col","flex-col",1900872603),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-direction","flex-direction",364609438),"column"], null),new cljs.core.Keyword(null,"flex-col-reverse","flex-col-reverse",-25379210),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-direction","flex-direction",364609438),"column-reverse"], null)], null);
 stylo.rule.defrules.cljs$core$IFn$_invoke$arity$1(stylo.tailwind.flex.flex_direction);
 stylo.rule.rule.cljs$core$IMultiFn$_add_method$arity$3(null,new cljs.core.Keyword(null,"flex-grow","flex-grow",1865160747),(function() {
-var G__41566 = null;
-var G__41566__1 = (function (_){
+var G__41591 = null;
+var G__41591__1 = (function (_){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"&","&",509580121),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-grow","flex-grow",1865160747),(1)], null)], null)], null);
 });
-var G__41566__2 = (function (_,x){
+var G__41591__2 = (function (_,x){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"&","&",509580121),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-grow","flex-grow",1865160747),x], null)], null)], null);
 });
-G__41566 = function(_,x){
+G__41591 = function(_,x){
 switch(arguments.length){
 case 1:
-return G__41566__1.call(this,_);
+return G__41591__1.call(this,_);
 case 2:
-return G__41566__2.call(this,_,x);
+return G__41591__2.call(this,_,x);
 }
 throw(new Error('Invalid arity: ' + arguments.length));
 };
-G__41566.cljs$core$IFn$_invoke$arity$1 = G__41566__1;
-G__41566.cljs$core$IFn$_invoke$arity$2 = G__41566__2;
-return G__41566;
+G__41591.cljs$core$IFn$_invoke$arity$1 = G__41591__1;
+G__41591.cljs$core$IFn$_invoke$arity$2 = G__41591__2;
+return G__41591;
 })()
 );
 stylo.rule.rule.cljs$core$IMultiFn$_add_method$arity$3(null,new cljs.core.Keyword(null,"flex-shrink","flex-shrink",1481146383),(function() {
-var G__41568 = null;
-var G__41568__1 = (function (_){
+var G__41596 = null;
+var G__41596__1 = (function (_){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"&","&",509580121),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-shrink","flex-shrink",1481146383),(1)], null)], null)], null);
 });
-var G__41568__2 = (function (_,x){
+var G__41596__2 = (function (_,x){
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"&","&",509580121),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-shrink","flex-shrink",1481146383),x], null)], null)], null);
 });
-G__41568 = function(_,x){
+G__41596 = function(_,x){
 switch(arguments.length){
 case 1:
-return G__41568__1.call(this,_);
+return G__41596__1.call(this,_);
 case 2:
-return G__41568__2.call(this,_,x);
+return G__41596__2.call(this,_,x);
 }
 throw(new Error('Invalid arity: ' + arguments.length));
 };
-G__41568.cljs$core$IFn$_invoke$arity$1 = G__41568__1;
-G__41568.cljs$core$IFn$_invoke$arity$2 = G__41568__2;
-return G__41568;
+G__41596.cljs$core$IFn$_invoke$arity$1 = G__41596__1;
+G__41596.cljs$core$IFn$_invoke$arity$2 = G__41596__2;
+return G__41596;
 })()
 );
 stylo.tailwind.flex.flex_wrap = new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"flex-no-wrap","flex-no-wrap",481321301),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-wrap","flex-wrap",455413707),"nowrap"], null),new cljs.core.Keyword(null,"flex-wrap","flex-wrap",455413707),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-wrap","flex-wrap",455413707),"wrap"], null),new cljs.core.Keyword(null,"flex-:wrap-reverse","flex-:wrap-reverse",-1567186996),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"flex-wrap","flex-wrap",455413707),"wrap-reverse"], null)], null);
