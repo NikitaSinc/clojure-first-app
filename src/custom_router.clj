@@ -1,6 +1,5 @@
 (ns custom-router
-  (:require [custom-router-test]
-            [clojure.string :as s]))
+  (:require  [clojure.string :as s]))
 
 (defn custom-parser [uri]
   "Returns parsed uri in vector"
@@ -8,7 +7,7 @@
     (if (or (empty? vector-path) (= [""] vector-path))
       []
       vector-path)))
-
+#_(custom-parser "/resources/main.js")
 (defn make-path-from-vector [path-vector path-string]
   (if (empty? path-vector)
     path-string
