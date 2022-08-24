@@ -28,7 +28,8 @@
   [func]
       (fn [request & args]
         (if-let [handler (apply func request args)]
-            (apply (first handler) (rest handler)))))
+          (if (not (string? (first handler)))
+            (apply (first handler) (rest handler))))))
 
 #_(if-let [uri-args (second (s/split "asd/asd/asd" #"\?"))] true false)
 #_(apply(my-wrap-uri-params (#(fn [request] ) {:uri "asd/asd/asd"})))

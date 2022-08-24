@@ -1,5 +1,6 @@
 (ns app
-  (:require [org.httpkit.server :as server :refer [run-server]]
+  (:require [app-test]
+            [org.httpkit.server :as server :refer [run-server]]
             [custom-router :refer [custom-router]]
             [custom-middleware :refer [my-wrap-catch
                                        my-wrap-uri-params
@@ -135,7 +136,7 @@
 
 (defn
   -main [& args]
-  (reset! server (run-server #'app {:port (:server-port config)})))
+  (reset! server (run-server #'app {:thread 1 :port (:server-port config)})))
 
 
 ; Delete later
