@@ -1,15 +1,19 @@
 (ns app
   (:require
-            [org.httpkit.server :as server :refer [run-server]]
-            [custom-router :refer [custom-router]]
-            [custom-middleware :refer [my-wrap-catch
-                                       my-wrap-uri-params
-                                       my-executor]]
-            [next.jdbc :as jdbc]
-            [dsql.pg :as dsql]
-            [clojure.java.io :as io]
-            [clojure.string :as s]
-            [clojure.data.json :as json]))
+   [org.httpkit.server :as server :refer [run-server]]
+   [custom-router :refer [custom-router]]
+   [custom-middleware :refer [my-wrap-catch
+                              my-wrap-uri-params
+                              my-executor]]
+
+   [ring.middleware.json]
+   [ring.middleware.keyword-params]
+   [next.jdbc :as jdbc]
+   [dsql.pg :as dsql]
+   [clojure.java.io :as io]
+   [clojure.string :as s]
+   [clojure.data.json :as json]
+   [clojure.string :as str]))
 
 (def full-config                         ;refactor later
   {
@@ -50,11 +54,61 @@
                          :select :*
                          :from :tasks})))
 
+(defn tasks-delete->db [id]
+  (first (->db (dsql/format
+                        {:ql/type :pg/delete
+                         :from :tasks
+                         :where ^:pg/op[:= :id id]
+                         :returning :id}))))
+
+(defn tasks-add->db [task]
+  (let [{:keys [description]} task]
+    (->db (dsql/format
+                        {:ql/type :pg/insert
+                         :into :tasks
+                         :value {:description description :done false}
+                         :returning :*}))))
+
+(defn tasks-update->db [task]
+    (let [{:keys [id description done]} task]
+    (first (->db (dsql/format
+                        {:ql/type :pg/update
+                         :update :tasks
+                         :set {:description description :done done}
+                         :where ^:pg/op[:= :id id]
+                         :returning :*})))))
+
+(defn trim-desc [tasks]
+  (if (map? tasks)
+    (update tasks :tasks/description (fn [old] (str/trim old)))
+    (mapv #(update % :tasks/description (fn [old] (str/trim old))) tasks)))
+
+#_(trim-desc [{:tasks/description "try crud               " :tasks/done false} {:tasks/description "sdasddgsd   " :tasks/done true}])
+#_(map? [{:description "try crud               " :done false}])
 (defn handler-get-all-tasks [request]
   {:status 200
-   :headers {"Content-Type" "text/json"}
-   :body (json/write-str (tasks-all->db))
+   :headers {"Content-Type" "application/json"}
+   :body (trim-desc (tasks-all->db))
    })
+
+(defn handler-add-single-task [request]
+  (let [task (get request :json-params)]
+  {:status 200
+   :headers {"Content-Type" "application/json"}
+   :body (trim-desc (tasks-add->db task))
+   }))
+
+(defn handler-delete-single-task [request]
+    (let [{:keys [task-id]} request]
+      {:status 200
+       :headers {"Content-Type" "application/json"}
+       :body (tasks-delete->db task-id)}))
+
+(defn handler-update-tasks [request]
+  (let [task (:json-params request)]
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body (trim-desc (tasks-update->db task))}))
 
 (defn handler-home [request]
   {:status 200
@@ -63,9 +117,7 @@
 
 (defn handler-tasks-all [request]
   {:status 200
-   :headers {"Content-Type" "text/html"
-             }
-
+   :headers {"Content-Type" "text/html"}
    :body    (slurp (io/resource "index.html"))})
 
 (defn handler-tasks-id [request]
@@ -103,6 +155,9 @@
 
     "tasks" {
              "get" {:get handler-get-all-tasks}
+             "add" {:post handler-add-single-task}
+             "delete" {[:task-id] {:post handler-delete-single-task}}
+             "update" {:post handler-update-tasks}
              :get handler-tasks-all
              :post handler-tasks-all
              [:identifier] {
@@ -123,7 +178,9 @@
 (def app (->        app-naked
                     my-executor
                     my-wrap-catch
-                    my-wrap-uri-params
+                    ring.middleware.keyword-params/wrap-keyword-params
+                    (ring.middleware.json/wrap-json-params {:key-fn keyword})
+                    ring.middleware.json/wrap-json-response
                     ))
 
 (defonce server (atom nil))
