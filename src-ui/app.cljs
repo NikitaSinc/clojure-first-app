@@ -8,7 +8,7 @@
                   [ajax.core :as ajax]
                   [clojure.string :as s]))
 
-(def app-state (r/atom {:tasks []}))
+(def app-state (r/atom {:tasks [] :change-desc nil}))
 
 (rf/reg-event-fx
   :get-tasks
@@ -53,7 +53,8 @@
                   :format           (ajax/json-request-format)
                   :response-format  (ajax/json-response-format {:keywords? true})
                   :on-success       [:success-update-tasks]
-                  :on-failure       [:failure-update-tasks]}}))
+                  :on-failure       [:failure-update-tasks]}
+     :fx [[:dispatch [:change-desc-event nil]]]}))
 
 
 (rf/reg-event-db
@@ -107,6 +108,10 @@
   (fn [db [_ response]]
     (assoc db :error-message response)))
 
+(rf/reg-event-db
+  :change-desc-event
+  (fn [db [_ id]]
+    (assoc db :change-desc id)))
 
 (rf/reg-sub
   :tasks
@@ -120,36 +125,59 @@
   (fn [tasks _]
     (sort #(false? (:tasks/done %)) tasks)))
 
+(rf/reg-sub
+  :change-desc
+  (fn [db _]
+    (:change-desc db)))
+
 (defn new-task-input [value]
   [:input {:value @value
            :placeholder "Type new task here"
            :on-change #(reset! value (-> % .-target .-value))}])
 
+(defn change-desc-input [value]
+   [:input {:value @value
+           :placeholder "Type new description"
+           :on-change #(reset! value (-> % .-target .-value))}])
+
 (defn tasks-grid []
   (let [tasks (rf/subscribe [:sorted-tasks])
-        new-task (r/atom "")]
-  [:table {:class (c :table [:border 2] [:w 100])}
+        ch-desc (rf/subscribe [:change-desc])
+        new-task (r/atom "")
+        new-description (r/atom "")]
+  [:table {:id "tasks-grid"
+           :class (c :table [:border 2] [:w 100])}
    [:thead {:class (c :px-auto)}
       [:tr {:class (c :table-row)}
       [:td "ID"]
       [:td "Description"]
-      [:td "Done"]]]
+      [:td "Done"]
+       ]]
    [:tbody {:class (c [:gap 2])}
-    (for [t @tasks]
+    (doall (for [t @tasks]
          ^{:key (:tasks/id t)}
      [:tr {:class (c :table-row)}
       [:td (str (:tasks/id t))]
-      [:td (if (not (:tasks/done t))
-             (str (:tasks/description t))
-             [:s (str (:tasks/description t))])]
+      [:td (doall (if (= (:tasks/id t) @ch-desc)
+             [change-desc-input new-description]
+             (if (not (:tasks/done t))
+              (str (:tasks/description t))
+              [:s (str (:tasks/description t))])))]
       [:td [:input {:type :checkbox
                     :checked (:tasks/done t)
                     :on-change #(rf/dispatch [:update-tasks
                                               {:id (:tasks/id t)
-                                              :description (:tasks/description t)
+                                               :description (:tasks/description t)
                                                :done (not(:tasks/done t))}])}]]
-      [:td [:button "Update"]]
-      [:td [:button {:on-click #(rf/dispatch [:delete-tasks (:tasks/id t)] )} "Delete"]]])
+      [:td (doall (if (not (= (:tasks/id t) @ch-desc))
+             [:button {:on-click #(rf/dispatch [:change-desc-event (:tasks/id t)])} "Change"]
+             [:button {:on-click #(rf/dispatch [:update-tasks
+                                                {:id (:tasks/id t)
+                                                 :description @new-description
+                                                 :done (:tasks/done t)}])} "Save"]))]
+      [:td (if (= (:tasks/id t) @ch-desc)
+             [:button {:on-click #(rf/dispatch [:change-desc-event nil])} "Discard"]
+             [:button {:on-click #(rf/dispatch [:delete-tasks (:tasks/id t)] )} "Delete"])]]))
      [:tr {:class (c :table-row)}
       [:td]
       [:td [new-task-input new-task]]
