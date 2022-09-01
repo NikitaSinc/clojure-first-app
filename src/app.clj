@@ -66,7 +66,7 @@
     (->db (dsql/format
                         {:ql/type :pg/insert
                          :into :tasks
-                         :value {:description description :done false}
+                         :values {:description description :done false}
                          :returning :*}))))
 
 (defn tasks-update->db [task]
@@ -88,8 +88,7 @@
 (defn handler-get-all-tasks [request]
   {:status 200
    :headers {"Content-Type" "application/json"}
-   :body (trim-desc (tasks-all->db))
-   })
+   :body (trim-desc (tasks-all->db))})
 
 (defn handler-add-single-task [request]
   (let [task (get request :json-params)]

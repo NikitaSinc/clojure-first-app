@@ -10,8 +10,29 @@
 
 (def app-state (r/atom {:tasks [] :change-desc nil}))
 
+(defn cljsify [d]
+  (js->clj d :keywordize-keys true))
+
+(rf/reg-fx
+  :custom-fetch
+  (fn [{:as req, :keys [method uri success failure]}]
+    (-> (.fetch js/window uri)
+        (.then (fn [resp] (if (> (.-status resp) 203)
+                            (doseq [f failure]
+                              (rf/dispatch [f (cljsify resp)]))
+                            (-> (.json resp)
+                                (.then (fn [resp] (doseq [s success]
+                                                    (rf/dispatch [s (cljsify resp)])))))))))))
+
 (rf/reg-event-fx
   :get-tasks
+  (fn [{db :db} _]
+    {:custom-fetch {:uri "http://localhost:8080/tasks/get"
+                    :success [:success-get-tasks]
+                    :failure [:failure-get-tasks]}}))
+
+#_(rf/reg-event-fx
+    :get-tasks
   (fn [{db :db} _]
     {:http-xhrio {:method           :get
                  :uri               "http://localhost:8080/tasks/get"
@@ -56,8 +77,13 @@
                   :on-failure       [:failure-update-tasks]}
      :fx [[:dispatch [:change-desc-event nil]]]}))
 
-
 (rf/reg-event-db
+  :success-get-tasks
+  (fn [db [_ response]]
+    (println response)
+    (assoc db :tasks response)))
+
+#_(rf/reg-event-db
   :success-get-tasks
   (fn [db [_ response]]
     (assoc db :tasks (js->clj response :keywordize-keys true))))
@@ -145,43 +171,43 @@
         ch-desc (rf/subscribe [:change-desc])
         new-task (r/atom "")
         new-description (r/atom "")]
-  [:table {:id "tasks-grid"
-           :class (c :table [:border 2] [:w 100])}
-   [:thead {:class (c :px-auto)}
+    [:table {:id "tasks-grid"
+             :class (c :table [:border 2] [:w 100])}
+     [:thead {:class (c :px-auto)}
       [:tr {:class (c :table-row)}
-      [:td "ID"]
-      [:td "Description"]
-      [:td "Done"]
-       ]]
-   [:tbody {:class (c [:gap 2])}
-    (doall (for [t @tasks]
-         ^{:key (:tasks/id t)}
-     [:tr {:class (c :table-row)}
-      [:td (str (:tasks/id t))]
-      [:td (doall (if (= (:tasks/id t) @ch-desc)
-             [change-desc-input new-description]
-             (if (not (:tasks/done t))
-              (str (:tasks/description t))
-              [:s (str (:tasks/description t))])))]
-      [:td [:input {:type :checkbox
-                    :checked (:tasks/done t)
-                    :on-change #(rf/dispatch [:update-tasks
-                                              {:id (:tasks/id t)
-                                               :description (:tasks/description t)
-                                               :done (not(:tasks/done t))}])}]]
-      [:td (doall (if (not (= (:tasks/id t) @ch-desc))
-             [:button {:on-click #(rf/dispatch [:change-desc-event (:tasks/id t)])} "Change"]
-             [:button {:on-click #(rf/dispatch [:update-tasks
-                                                {:id (:tasks/id t)
-                                                 :description @new-description
-                                                 :done (:tasks/done t)}])} "Save"]))]
-      [:td (if (= (:tasks/id t) @ch-desc)
-             [:button {:on-click #(rf/dispatch [:change-desc-event nil])} "Discard"]
-             [:button {:on-click #(rf/dispatch [:delete-tasks (:tasks/id t)] )} "Delete"])]]))
-     [:tr {:class (c :table-row)}
-      [:td]
-      [:td [new-task-input new-task]]
-      [:td [:button {:on-click #(rf/dispatch [:add-tasks {:description @new-task}])} "Add"]]]]]))
+       [:td "ID"]
+       [:td "Description"]
+       [:td "Done"]]]
+     [:tbody {:class (c [:gap 2])}
+      (doall
+        (for [t @tasks]
+          ^{:key (:tasks/id t)}
+          [:tr {:class (c :table-row)}
+           [:td (str (:tasks/id t))]
+           [:td (doall (if (= (:tasks/id t) @ch-desc)
+                         [change-desc-input new-description]
+                         (if (not (:tasks/done t))
+                           (str (:tasks/description t))
+                           [:s (str (:tasks/description t))])))]
+           [:td [:input {:type :checkbox
+                         :checked (:tasks/done t)
+                         :on-change #(rf/dispatch [:update-tasks
+                                                   {:id (:tasks/id t)
+                                                    :description (:tasks/description t)
+                                                    :done (not(:tasks/done t))}])}]]
+           [:td (doall (if (not (= (:tasks/id t) @ch-desc))
+                         [:button {:on-click #(rf/dispatch [:change-desc-event (:tasks/id t)])} "Change"]
+                         [:button {:on-click #(rf/dispatch [:update-tasks
+                                                            {:id (:tasks/id t)
+                                                             :description @new-description
+                                                             :done (:tasks/done t)}])} "Save"]))]
+           [:td (if (= (:tasks/id t) @ch-desc)
+                  [:button {:on-click #(rf/dispatch [:change-desc-event nil])} "Discard"]
+                  [:button {:on-click #(rf/dispatch [:delete-tasks (:tasks/id t)] )} "Delete"])]]))
+      [:tr {:class (c :table-row)}
+       [:td]
+       [:td [new-task-input new-task]]
+       [:td [:button {:on-click #(rf/dispatch [:add-tasks {:description @new-task}])} "Add"]]]]]))
 
 (defn app []
   [:div.wrapper {:class (c :w-full
