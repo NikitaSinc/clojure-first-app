@@ -5,7 +5,7 @@
    [custom-middleware :refer [my-wrap-catch
                               my-wrap-uri-params
                               my-executor]]
-
+   [ring.middleware.params]
    [ring.middleware.json]
    [ring.middleware.keyword-params]
    [next.jdbc :as jdbc]
@@ -16,7 +16,7 @@
    [clojure.string :as str]))
 
 (def full-config                         ;refactor later
-  {
+   {
    :run :dev
    :dev{
         :server-port 8080
@@ -29,15 +29,25 @@
              :dbpassword "1111"
              }
         }
+   :test{
+        :server-port 8081
+        :db {
+             :dbtype "postgresql"
+             :dbport 5432
+             :dbhost "localhost"
+             :dbname "tasks_test"
+             :dbuser "postgres"
+             :dbpassword "1111"
+             }
+        }
    })
 
 (defn configurator []
-  (if-let [config (get full-config (:run full-config))]
-  config
+  (if-let [conf (get full-config (:run full-config))]
+  conf
   (throw (ex-info "Configuration is not loaded corectly" {:cause "config"}))))
 
 (def config (configurator))
-
 
 (def db-source
   (let [dbconf (:db config)]
@@ -63,11 +73,11 @@
 
 (defn tasks-add->db [task]
   (let [{:keys [description]} task]
-    (->db (dsql/format
+    (first (->db (dsql/format
                         {:ql/type :pg/insert
                          :into :tasks
-                         :values {:description description :done false}
-                         :returning :*}))))
+                         :value {:description description :done false}
+                         :returning :*})))))
 
 (defn tasks-update->db [task]
     (let [{:keys [id description done]} task]
@@ -83,8 +93,6 @@
     (update tasks :tasks/description (fn [old] (str/trim old)))
     (mapv #(update % :tasks/description (fn [old] (str/trim old))) tasks)))
 
-#_(trim-desc [{:tasks/description "try crud               " :tasks/done false} {:tasks/description "sdasddgsd   " :tasks/done true}])
-#_(map? [{:description "try crud               " :done false}])
 (defn handler-get-all-tasks [request]
   {:status 200
    :headers {"Content-Type" "application/json"}
@@ -134,7 +142,7 @@
 (defn file-handler [request]
   (let [{:keys [rest-path]} request
         file-format (second (s/split rest-path #"\."))]
-    (if (= "js" file-format)      ;I know it's ugly -> Missing file-handling middleware (: Refactor later
+    (if (= "js" file-format)      ;I know it's ugly -> Missing file-handling middleware (: Refactor later Or not)))
     {
      :status 200
      :headers {"Content-Type" "application/javascript"
@@ -179,6 +187,7 @@
                     my-wrap-catch
                     ring.middleware.keyword-params/wrap-keyword-params
                     (ring.middleware.json/wrap-json-params {:key-fn keyword})
+                    ring.middleware.params/wrap-params
                     ring.middleware.json/wrap-json-response
                     ))
 

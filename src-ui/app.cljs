@@ -97,7 +97,7 @@
   :success-add-tasks
   (fn [db [_ response]]
     (let [tdb (:tasks db)
-          resp (first (js->clj response))]
+          resp (js->clj response)]
     (update db :tasks (fn [_]
                         (conj tdb resp))))))
 
