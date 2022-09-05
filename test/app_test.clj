@@ -67,6 +67,66 @@
 (defn db-key-transform-vec [v]
   (mapv db-key-transform-map v))
 
+(defn testing-add [& [expected actual]]
+  (if (and (nil? expected) (nil? actual))
+    (is (= {:description "added-task" :done false}
+           (->
+             @(cl/post "http://localhost:8081/tasks/add"
+                       {:headers {"content-type" "application/json"}
+                        :body (ch/generate-string {:description "added-task"})})
+             (:body)
+             my-js
+             db-key-transform-map)))
+     (is (= expected
+           (->
+             @(cl/post "http://localhost:8081/tasks/add"
+                       {:headers {"content-type" "application/json"}
+                        :body (ch/generate-string actual)})
+             (:status))))))
+
+(defn testing-delete [& [expected actual]]
+  (let [id (-> @(cl/post "http://localhost:8081/tasks/add"
+                      {:headers {"content-type" "application/json"}
+                       :body (ch/generate-string {:description "task to delete"})})
+                (:body)
+                (ch/parse-string keyword)
+                (:tasks/id))]
+    (if (and (nil? actual) (nil? expected))
+      (is (= id                                                         ;normal case
+           (->
+             @(cl/post (str "http://localhost:8081/tasks/delete/" id))
+             (:body)
+             (ch/parse-string keyword)
+             (:tasks/id))))
+      (is (= expected                                                   ;custom case
+             (:status @(cl/post (str "http://localhost:8081/tasks/delete/" actual)))))
+    )))
+
+(defn testing-update [& [expected actual]]
+  (let [id (-> @(cl/post "http://localhost:8081/tasks/add"
+                      {:headers {"content-type" "application/json"}
+                       :body (ch/generate-string {:description "task to update"})})
+                (:body)
+                (ch/parse-string keyword)
+                (:tasks/id))]
+     (if (and (nil? actual) (nil? expected))
+        (is (= {:tasks/id id                                            ;normal case
+                :tasks/description "task updated"
+                :tasks/done true}
+               (->
+                 @(cl/post "http://localhost:8081/tasks/update/"
+                            {:headers {"content-type" "application/json"}
+                             :body (ch/generate-string
+                                       {:id id :description "task updated" :done true})})
+                 (:body)
+                 (ch/parse-string keyword))))
+        (is (= expected                                                 ;custom case
+               (->
+                 @(cl/post "http://localhost:8081/tasks/update/"
+                           {:headers {"content-type" "application/json"}
+                            :body (ch/generate-string actual)})
+                 (:status)))))))
+
 (deftest integration-crud-tasks-test
   (testing "get tasks"
     (is (= test-tasks
@@ -77,41 +137,18 @@
              db-key-transform-vec))))
 
   (testing "add tasks"
-    (is (= {:description "added-task" :done false}
-           (->
-             @(cl/post "http://localhost:8081/tasks/add"
-                       {:headers {"content-type" "application/json"}
-                        :body (ch/generate-string {:description "added-task"})})
-             (:body)
-             my-js
-             db-key-transform-map))))
+    (testing-add)
+    (testing-add 404 nil)
+    (testing-add 500 {}))
 
   (testing "delete tasks"
-    (let [id (-> @(cl/post "http://localhost:8081/tasks/add"
-                      {:headers {"content-type" "application/json"}
-                       :body (ch/generate-string {:description "task to delete"})})
-                (:body)
-                (ch/parse-string keyword)
-                (:tasks/id))]
-    (is (= id
-           (->
-             @(cl/post (str "http://localhost:8081/tasks/delete/" id))
-             (:body)
-             (ch/parse-string keyword)
-             (:tasks/id))))))
+    (testing-delete)
+    (testing-delete 404 nil)
+    (testing-delete 404 "1111122")
+    (testing-delete 500 "asdasfqwfqwfq"))
+
   (testing "update tasks"
-    (let [id (-> @(cl/post "http://localhost:8081/tasks/add"
-                      {:headers {"content-type" "application/json"}
-                       :body (ch/generate-string {:description "task to update"})})
-                (:body)
-                (ch/parse-string keyword)
-                (:tasks/id))]
-    (is (= {:tasks/id id
-            :tasks/description "task updated"
-            :tasks/done true}
-           (->
-             @(cl/post "http://localhost:8081/tasks/update/"
-                            {:headers {"content-type" "application/json"}
-                             :body (ch/generate-string {:id id :description "task updated" :done true})})
-             (:body)
-             (ch/parse-string keyword)))))))
+    (testing-update)
+    (testing-update 404 nil)
+    (testing-update 500 {:id "asfda" :description "ebanamiy obema" :done true})
+    (testing-update 404 "bolnoy?")))

@@ -7,7 +7,7 @@ public/js
 
 pom.xml
 pom.xml.asc
-.cpcache
+*.cpcache
 *.iml
 *.jar
 *.log

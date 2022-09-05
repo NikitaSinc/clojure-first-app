@@ -100,22 +100,29 @@
 
 (defn handler-add-single-task [request]
   (let [task (get request :json-params)]
-  {:status 200
-   :headers {"Content-Type" "application/json"}
-   :body (trim-desc (tasks-add->db task))
-   }))
+   (if (not (nil? task))
+     (if-let [result (trim-desc (tasks-add->db task))]
+       {:status 200
+        :headers {"Content-Type" "application/json"}
+        :body result}
+       nil))))
 
 (defn handler-delete-single-task [request]
     (let [{:keys [task-id]} request]
-      {:status 200
-       :headers {"Content-Type" "application/json"}
-       :body (tasks-delete->db task-id)}))
+      (if (not (nil? task-id))
+        (if-let [result (tasks-delete->db task-id)]
+        {:status 200
+         :headers {"Content-Type" "application/json"}
+         :body result}
+        nil))))
 
 (defn handler-update-tasks [request]
   (let [task (:json-params request)]
+    (if (not (nil? task))
+      (if-let [result (trim-desc (tasks-update->db task))]
     {:status 200
      :headers {"Content-Type" "application/json"}
-     :body (trim-desc (tasks-update->db task))}))
+     :body result}))))
 
 (defn handler-home [request]
   {:status 200
