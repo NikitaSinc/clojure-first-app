@@ -4,10 +4,10 @@ public/js
 /target
 /checkouts
 /src/gen
-
+/.cpcache
+/postgres-data
 pom.xml
 pom.xml.asc
-*.cpcache
 *.iml
 *.jar
 *.log
