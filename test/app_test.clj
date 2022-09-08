@@ -1,13 +1,14 @@
 (ns app-test
-  (:require [app :as a]
-            [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [app :as a :refer [config]]
+            [clojure.test :as t :refer [deftest testing is use-fixtures]]
             [next.jdbc :as jdbc]
             [dsql.pg :as dsql]
             [org.httpkit.client :as cl]
             [org.httpkit.server :as serv]
             [clojure.data.json :as json]
             [clojure.set :as set]
-            [cheshire.core :as ch]))
+            [cheshire.core :as ch])
+  )
 
 (def test-tasks [{:description "test1" :done false}  ;can be loaded from file but im lazy
                  {:description "test2" :done true}
@@ -37,13 +38,15 @@
     (reset! app-test/test-server nil)))
 
 (defn testing-env [t]                             ;TODO refactor with dsql?
-  (with-redefs [a/config (:test a/full-config)]
-    ((app-test/-main-test)
+  (with-redefs [a/config (:test a/full-config)
+                a/db-source (a/db-sourcer (:db (:test a/full-config)))]
+    (println a/config)
     (a/->db ["SELECT 'CREATE DATABASE tasks_test'
-              WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'tasks_test')"])
-    (fill-test-db test-tasks)
-    (t))
-    (app-test/-stop-test)))
+              WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'tasks_test');"])
+     (app-test/-main-test)
+     (fill-test-db test-tasks)
+     (t))
+    (app-test/-stop-test))
 
 (deftest app-naked-test
   (testing "home GET"

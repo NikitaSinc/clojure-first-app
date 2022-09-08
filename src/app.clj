@@ -1,5 +1,5 @@
 (ns app
-  (:require
+   (:require
    [org.httpkit.server :as server :refer [run-server]]
    [custom-router :refer [custom-router]]
    [custom-middleware :refer [my-wrap-catch
@@ -13,11 +13,23 @@
    [clojure.java.io :as io]
    [clojure.string :as s]
    [clojure.data.json :as json]
-   [clojure.string :as str]))
+   [clojure.string :as str])
+  (:gen-class))
 
 (def full-config                         ;refactor later
    {
-   :run :dev
+   :run :prod
+   :prod{
+        :server-port 8080
+        :db {
+             :dbtype "postgresql"
+             :dbport 5432
+             :dbhost "db_tasks"
+             :dbname "tasks"
+             :dbuser "postgres"
+             :dbpassword "1111"
+             }
+        }
    :dev{
         :server-port 8080
         :db {
@@ -49,10 +61,13 @@
 
 (def config (configurator))
 
-(def db-source
-  (let [dbconf (:db config)]
+(defn db-sourcer [dbconf]
     (jdbc/get-datasource {:dbtype (:dbtype dbconf)
-                          :dbname (:dbname dbconf)})))
+                          :dbname (:dbname dbconf)
+                          :host (:dbhost dbconf)
+                          :port (:dbport dbconf)}))
+
+(def db-source (db-sourcer (:db config)))
 
 (defn ->db [query]
   (with-open [conn (jdbc/get-connection db-source (-> config :db :dbuser) (-> config :db :dbpassword))]

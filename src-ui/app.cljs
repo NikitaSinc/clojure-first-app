@@ -97,7 +97,7 @@
   :success-add-tasks
   (fn [db [_ response]]
     (let [tdb (:tasks db)
-          resp (js->clj response)]
+          resp (js->clj response :keywordize-keys true)]
     (update db :tasks (fn [_]
                         (conj tdb resp))))))
 

@@ -3,13 +3,25 @@ version: '2.6'
 services:
  tasks:
   container_name: db_tasks
+  restart: 'always'
   ports: 
    - "5432:5432"
-  environment: 
+  environment:
+   - POSTGRES_DB=tasks 
    - POSTGRES_PASSWORD=1111
    - POSTGRES_USER=postgres
   image: postgres:alpine
   volumes:
    - ./postgres-data:/var/lib/postgresql/data
    - ./resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-
+ 
+ app:
+  restart: always
+  ports:
+   - '8080:8080'
+   - '8081:8081'
+  build: 
+   context: .
+   dockerfile: Dockerfile
+  depends_on:
+   - tasks

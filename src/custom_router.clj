@@ -18,7 +18,7 @@
 (def make-path-from-vector-entry (fn [p] (make-path-from-vector (rest p) (first p))))
 
 (defn route-navigator [cur path route-map request]
-  (println cur path route-map request)
+
   (if (empty? path)
     (if-let [page (get route-map (:request-method request))]
       (list page request)
