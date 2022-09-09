@@ -1,0 +1,32 @@
+name: clojure_test_n_build
+on: 
+ push:
+  branches: 
+   - 'main'
+jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
+    -
+     name: Checkout
+     uses: checkout@v3
+    -
+     name: Prepare java
+     uses: actions/setup-java@v3
+     with:
+      java-version: '11'
+      distribution: 'adopt'
+    -
+     name: Install clojure tools
+     uses: DeLaGuardo/setup-clojure@3.5
+     with:
+      cli: 'latest'
+    -
+     name: Run Tests
+     run: clj -X:test
+    -
+     name: Build Uberjar
+     run: clj -T:build uber
+     
+  
+   
