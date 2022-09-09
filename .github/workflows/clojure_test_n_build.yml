@@ -26,10 +26,10 @@ jobs:
       cli: 'latest'
     -
      name: Run Tests
-     run: clj -X:test
+     run: clojure -X:test
     -
      name: Build Uberjar
-     run: clj -T:build uber
+     run: clojure -T:build uber
      
   
    
