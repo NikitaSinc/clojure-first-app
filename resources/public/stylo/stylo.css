@@ -89,3 +89,45 @@ img, video {
   max-width: 100%;
   height: auto;
 }
+
+.app-218-18 {
+  font-size: 1.125rem;
+}
+
+.app-213-25 {
+  width: 100%;
+  padding-left: 2.5rem;
+  padding-top: 2.5rem;
+  font-sants: nil;
+}
+
+.app-185-24 {
+  display: table-row;
+}
+
+.app-181-22 {
+  gap: 0.5rem;
+}
+
+.app-175-21 {
+  display: table;
+  border-width: 2px;
+  width: 25.0rem;
+}
+
+.app-176-22 {
+  padding-left: auto;
+  padding-right: auto;
+}
+
+.app-207-20 {
+  display: table-row;
+}
+
+.app-177-20 {
+  display: table-row;
+}
+
+.app-217-26 {
+  width: auto;
+}
