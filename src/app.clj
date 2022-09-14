@@ -24,7 +24,7 @@
         :db {
              :dbtype "postgresql"
              :dbport 5432
-             :dbhost "db_tasks"
+             :dbhost "db-tasks"
              :dbname "tasks"
              :dbuser "postgres"
              :dbpassword "1111"

@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
  name: db-tasks
  labels:
-  app: db
+  app: db-tasks
 spec:
  selector:
   matchLabels:
-   app: db
+   app: db-tasks
  template:
   metadata:
    labels:
-    app: db
+    app: db-tasks
   spec:
    containers:
    - name: db-tasks

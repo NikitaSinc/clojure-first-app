@@ -2,7 +2,7 @@ version: '2.6'
 
 services:
  tasks:
-  container_name: db_tasks
+  container_name: db-tasks
   restart: 'always'
   ports: 
    - "5432:5432"
