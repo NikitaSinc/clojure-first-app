@@ -21,3 +21,10 @@ spec:
      envFrom:
      - configMapRef:
         name: db-tasks-config
+     volumeMounts:
+     - mountPath: /var/lib/postgresql/data
+       name: pvc-tasks
+   volumes:
+   - name: pvc-tasks
+     persistentVolumeClaim:
+      claimName: pvc-tasks
