@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: db-tasks-config
+ labels:
+  app: db
+data:
+ POSTGRES_DB: tasks
+ POSTGRES_USER: postgres
+ POSTGRES_PASSWORD: '1111'

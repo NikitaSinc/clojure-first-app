@@ -1,7 +1,7 @@
 \c postgres
 drop database if exists tasks;
 drop database if exists tasks_test;
-
+alter user postgres with password '1111';
 create database tasks;
 create database tasks_test;
 \c tasks

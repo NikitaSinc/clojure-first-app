@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: db-tasks
+ labels:
+  app: db
+spec:
+ selector:
+  matchLabels:
+   app: db
+ template:
+  metadata:
+   labels:
+    app: db
+  spec:
+   containers:
+   - name: db-tasks
+     image: nikitasinc/db_tasks
+     ports:
+     - containerPort: 5432
+     envFrom:
+     - configMapRef:
+        name: db-tasks-config
