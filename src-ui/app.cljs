@@ -13,8 +13,6 @@
 (defn cljsify [d]
   (js->clj d :keywordize-keys true))
 
-(def host "http://localhost:80")
-
 (rf/reg-fx
   :custom-fetch
   (fn [{:as req, :keys [method uri success failure]}]
@@ -29,7 +27,7 @@
 (rf/reg-event-fx
   :get-tasks
   (fn [{db :db} _]
-    {:custom-fetch {:uri (str host "/tasks/get")
+    {:custom-fetch {:uri "http://localhost:8080/tasks/get"
                     :success [:success-get-tasks]
                     :failure [:failure-get-tasks]}}))
 
@@ -47,7 +45,7 @@
   :add-tasks
   (fn [{db :db} [_ val]]
     {:http-xhrio {:method           :post
-                  :uri              (str host "/tasks/add")
+                  :uri              "http://localhost:8080/tasks/add"
                   :timeout          5000
                   :params           val
                   :format           (ajax/json-request-format)
@@ -59,7 +57,7 @@
   :delete-tasks
   (fn [{db :db} [_ val]]
     {:http-xhrio {:method           :post
-                  :uri              (str host "/tasks/delete/" val)
+                  :uri              (str "http://localhost:8080/tasks/delete/" val)
                   :timeout          5000
                   :format           (ajax/json-request-format)
                   :response-format  (ajax/json-response-format {:keywords? true})
@@ -70,7 +68,7 @@
   :update-tasks
   (fn [{db :db} [_ val]]
     {:http-xhrio {:method           :post
-                  :uri              (str host "/tasks/update/")
+                  :uri              (str "http://localhost:8080/tasks/update/")
                   :timeout          5000
                   :params           val
                   :format           (ajax/json-request-format)
